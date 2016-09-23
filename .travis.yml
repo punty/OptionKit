@@ -1,0 +1,10 @@
+language: objective-c
+
+osx_image: xcode8
+
+branches:
+ only:
+ - master
+
+script:
+- swift test
