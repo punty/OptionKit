@@ -10,11 +10,16 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.options.count == 1)
         XCTAssert(res.extraArgs.count == 0)
     }
+    
+    func testFail() {
+        XCTAssert(false)
+    }
 
 
     static var allTests : [(String, (OptionKitTests) -> () throws -> Void)] {
         return [
             ("testSingleOptionParse", testSingleOptionParse),
+            ("testFail", testFail),
         ]
     }
 }
