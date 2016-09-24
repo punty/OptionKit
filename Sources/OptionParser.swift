@@ -50,8 +50,8 @@ public class OptionParser {
     }
     
     
-    public func parse(arguments: [String]) throws -> (options: Set<FlagOption>, extraArgs: [String]) {
-        var resultOptions = Set<FlagOption> ()
+    public func parse(arguments: [String]) throws -> (options: [FlagOption], extraArgs: [String]) {
+        var resultOptions = [FlagOption] ()
         var externalArgs: [String] = []
         var skipElements = 1
         for (index, argument) in arguments.enumerated() {
@@ -83,7 +83,7 @@ public class OptionParser {
                         }
                     }
                 }
-                resultOptions.insert(flag)
+                resultOptions.append(flag)
                 skipElements = externalArgs.count
                 if attachedString != nil {
                     skipElements -= 1
@@ -110,7 +110,7 @@ public class OptionParser {
                         }
                         skipElements = externalArgs.count
                     }
-                    resultOptions.insert(flag)
+                    resultOptions.append(flag)
                 }
             }
         }
