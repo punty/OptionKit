@@ -5,6 +5,8 @@ osx_image: xcode8
 branches:
  only:
  - master
+script:
+- swift test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
