@@ -36,7 +36,7 @@ public class OptionParser {
         self.flags = flags
     }
     
-    public func printHelp() -> String {
+    public func helpUsage() -> String {
         var message = ""
         if let name = self.name {
             message.append("Usage: \(name) [options] \n")
@@ -76,7 +76,6 @@ public class OptionParser {
     public func parse(arguments: [String]) throws -> (options: [Option], extraArgs: [String]) {
         var resultOptions = [Option] ()
         name = arguments[0]
-        print(printHelp())
         var externalArgs: [String] = []
         var skipElements = 1
         for (index, argument) in arguments.enumerated() {
