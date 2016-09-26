@@ -115,10 +115,19 @@ public class OptionParser {
             }
         }
         
+        //validate the parsing
         let missingFlags = flags.filter{$0.required && !resultOptions.contains($0)}
         if missingFlags.count > 0 {
-            throw OptionKitError.requiredOptionMissing(option: missingFlags.map{$0.flag}.reduce("") {$0 + " " + $1})
+            let message = missingFlags.map{$0.flag}.reduce("") {$0 + " " + $1}
+            throw OptionKitError.requiredOptionMissing(option: message.substring(from: message.index(after: message.startIndex)))
         }
+        
+        let missingArgs = resultOptions.filter{$0.takesArguments && $0.value == nil}
+        if missingArgs.count > 0 {
+            let message = missingArgs.map{$0.flag}.reduce("") {$0 + " " + $1}
+            throw OptionKitError.requiredArgumentMissing(argument: message.substring(from: message.index(after: message.startIndex)))
+        }
+        
         return (resultOptions, externalArgs)
     }
     
