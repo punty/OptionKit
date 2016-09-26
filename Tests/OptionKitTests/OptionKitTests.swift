@@ -3,7 +3,7 @@ import XCTest
 
 class OptionKitTests: XCTestCase {
     func testSingleOptionParse() {
-        let flags = [FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: true, takesArguments: false)]
+        let flags = [Option(shortName: "h", name: "help", helpMessage: "Print Help", required: true, takesArguments: false)]
         let optionParser = OptionParser(flags: flags)
         let args = ["test", "-h"]
         let res = try! optionParser.parse(arguments:args)
@@ -12,8 +12,8 @@ class OptionKitTests: XCTestCase {
     }
     
     func testConcatOptionParse() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -30,8 +30,8 @@ class OptionKitTests: XCTestCase {
     }
     
     func testConcatLastArgOptionParse() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: true)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: true)
         
         let flags = [
             helpFlag,
@@ -45,10 +45,10 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.options.index(of: helpFlag) != nil)
         XCTAssert(res.options.index(of: versFlag) != nil)
         for flag in res.options {
-            if flag.flag == "vesion" {
+            if flag.name == "vesion" {
                 XCTAssert(flag.value == "arg1")
             }
-            if flag.flag == "help" {
+            if flag.name == "help" {
                 XCTAssert(flag.value == nil)
             }
         }
@@ -57,8 +57,8 @@ class OptionKitTests: XCTestCase {
    
     
     func testConcatLastNoArgOptionParse() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -72,10 +72,10 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.options.index(of: helpFlag) != nil)
         XCTAssert(res.options.index(of: versFlag) != nil)
         for flag in res.options {
-            if flag.flag == "vesion" {
+            if flag.name == "vesion" {
                 XCTAssert(flag.value == nil)
             }
-            if flag.flag == "help" {
+            if flag.name == "help" {
                 XCTAssert(flag.value == nil)
             }
         }
@@ -85,8 +85,8 @@ class OptionKitTests: XCTestCase {
     }
     
     func testLongFlag() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -100,10 +100,10 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.options.index(of: helpFlag) != nil)
         XCTAssert(res.options.index(of: versFlag) != nil)
         for flag in res.options {
-            if flag.flag == "vesion" {
+            if flag.name == "vesion" {
                 XCTAssert(flag.value == nil)
             }
-            if flag.flag == "help" {
+            if flag.name == "help" {
                 XCTAssert(flag.value == nil)
             }
         }
@@ -111,8 +111,8 @@ class OptionKitTests: XCTestCase {
     }
     
     func testAttachedValue() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: true)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: true)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: true)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: true)
         
         let flags = [
             helpFlag,
@@ -126,10 +126,10 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.options.index(of: helpFlag) != nil)
         XCTAssert(res.options.index(of: versFlag) != nil)
         for flag in res.options {
-            if flag.flag == "vesion" {
+            if flag.name == "vesion" {
                 XCTAssert(flag.value == "versione")
             }
-            if flag.flag == "help" {
+            if flag.name == "help" {
                 XCTAssert(flag.value == "aiuto")
             }
         }
@@ -137,8 +137,8 @@ class OptionKitTests: XCTestCase {
     }
     
     func testAttachedValueExtraArgs() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: true)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: true)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: true)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: true)
         
         let flags = [
             helpFlag,
@@ -152,10 +152,10 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.options.index(of: helpFlag) != nil)
         XCTAssert(res.options.index(of: versFlag) != nil)
         for flag in res.options {
-            if flag.flag == "vesion" {
+            if flag.name == "vesion" {
                 XCTAssert(flag.value == "versione")
             }
-            if flag.flag == "help" {
+            if flag.name == "help" {
                 XCTAssert(flag.value == "aiuto")
             }
         }

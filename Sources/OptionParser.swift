@@ -1,3 +1,4 @@
+
 import Foundation
 
 public enum OptionKitError: Error {
@@ -14,19 +15,20 @@ public class OptionParser {
     private let flagPrefix = "--"
     private let argumentAttacher = "="
     
-    var flags: [FlagOption]
+    var flags: [Option]
     
-    public init(flags: [FlagOption]) {
+    public init(flags: [Option]) {
         self.flags = flags
+        print(printHelp())
     }
     
     public func printHelp() -> String {
-        return ""
+        return flags[0].usage()
     }
     
     //Find the option
-    private func option(flag:String, short:Bool, flags:[FlagOption]) throws -> FlagOption {
-        let index = flags.index() { flag == (short ? $0.shortFlag : $0.flag)}
+    private func option(flag:String, short:Bool, flags:[Option]) throws -> Option {
+        let index = flags.index() { flag == (short ? $0.shortName : $0.name)}
         guard let optionIndex = index else {throw OptionKitError.optionNotValid(option: flag)}
         return flags[optionIndex]
     }
@@ -50,8 +52,8 @@ public class OptionParser {
     }
     
     
-    public func parse(arguments: [String]) throws -> (options: [FlagOption], extraArgs: [String]) {
-        var resultOptions = [FlagOption] ()
+    public func parse(arguments: [String]) throws -> (options: [Option], extraArgs: [String]) {
+        var resultOptions = [Option] ()
         var externalArgs: [String] = []
         var skipElements = 1
         for (index, argument) in arguments.enumerated() {
@@ -118,13 +120,13 @@ public class OptionParser {
         //validate the parsing
         let missingFlags = flags.filter{$0.required && !resultOptions.contains($0)}
         if missingFlags.count > 0 {
-            let message = missingFlags.map{$0.flag}.reduce("") {$0 + " " + $1}
+            let message = missingFlags.map{$0.name}.reduce("") {$0 + " " + $1}
             throw OptionKitError.requiredOptionMissing(option: message.substring(from: message.index(after: message.startIndex)))
         }
         
         let missingArgs = resultOptions.filter{$0.takesArguments && $0.value == nil}
         if missingArgs.count > 0 {
-            let message = missingArgs.map{$0.flag}.reduce("") {$0 + " " + $1}
+            let message = missingArgs.map{$0.name}.reduce("") {$0 + " " + $1}
             throw OptionKitError.requiredArgumentMissing(argument: message.substring(from: message.index(after: message.startIndex)))
         }
         

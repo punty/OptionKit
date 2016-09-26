@@ -3,4 +3,5 @@ import XCTest
 
 XCTMain([
      testCase(OptionKitTests.allTests),
+     testCase(OptionKitExceptionTests.allTests),
 ])

@@ -1,18 +1,12 @@
-//
-//  OptionKitExceptionTests.swift
-//  OptionKit
-//
-//  Created by Francesco Puntillo on 26/09/2016.
-//
-//
 
 import XCTest
+
 @testable import OptionKit
 
 class OptionKitExceptionTests: XCTestCase {
     func testMissingFlag() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: true, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: true, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: true, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: true, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -39,8 +33,8 @@ class OptionKitExceptionTests: XCTestCase {
     }
     
     func testMissingArgument() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: true, takesArguments: true)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: true, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: true, takesArguments: true)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: true, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -67,8 +61,8 @@ class OptionKitExceptionTests: XCTestCase {
     }
     
     func testExtraArgument() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: true, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: true, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: true, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: true, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -95,8 +89,8 @@ class OptionKitExceptionTests: XCTestCase {
     }
     
     func testNotValidOptionEnd() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)
         
         let flags = [
             helpFlag,
@@ -123,8 +117,8 @@ class OptionKitExceptionTests: XCTestCase {
     }
     
     func testExtraArgumentEnd() {
-        let helpFlag = FlagOption(shortFlag: "h", flag: "help", helpMessage: "Print Help", required: false, takesArguments: false)
-        let versFlag = FlagOption(shortFlag: "v", flag: "version", helpMessage: "Print Version", required: false, takesArguments: false)
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)
         
         let flags = [
             helpFlag,
