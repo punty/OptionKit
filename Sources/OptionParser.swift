@@ -6,6 +6,19 @@ public enum OptionKitError: Error {
     case unexpectedArgument(argument: String)
     case requiredOptionMissing(option: String)
     case requiredArgumentMissing(argument: String)
+    
+    func errorMessage() -> String {
+        switch self {
+        case .optionNotValid(let option):
+            return "Invalid Option: '\(option)'"
+        case .requiredArgumentMissing(let argument):
+            return "Value is missing for the option: '\(argument)'"
+        case .unexpectedArgument(let argument):
+            return "Value '\(argument)' is not expected"
+        case .requiredOptionMissing(let option):
+            return "'\(option)' need a value"
+        }
+    }
 }
 
 
@@ -17,13 +30,21 @@ public class OptionParser {
     
     var flags: [Option]
     
+    var name: String?
+    
     public init(flags: [Option]) {
         self.flags = flags
-        print(printHelp())
     }
     
     public func printHelp() -> String {
-        return flags[0].usage()
+        var message = ""
+        if let name = self.name {
+            message.append("Usage: \(name) [options] \n")
+        }
+        for opt in flags {
+            message.append(opt.usage())
+        }
+        return message
     }
     
     //Find the option
@@ -54,6 +75,8 @@ public class OptionParser {
     
     public func parse(arguments: [String]) throws -> (options: [Option], extraArgs: [String]) {
         var resultOptions = [Option] ()
+        name = arguments[0]
+        print(printHelp())
         var externalArgs: [String] = []
         var skipElements = 1
         for (index, argument) in arguments.enumerated() {

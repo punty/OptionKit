@@ -29,7 +29,7 @@ public struct Option: Hashable {
     public func usage() -> String {
         let shortUsage = shortName != nil ? "-\(shortName!), " : ""
         let usage = shortUsage + "--\(name):"
-        return "\(usage) \n \t \(helpMessage) (required: \(required))"
+        return "\(usage) \n \t \(helpMessage) (\(required ? "Required" : "Optional")) \n"
     }
     
 }
