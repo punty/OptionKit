@@ -1,8 +1,5 @@
 matrix:
     include:
-    branches:
-    only:
-       - master
     - os: linux
           dist: trusty
           sudo: required
