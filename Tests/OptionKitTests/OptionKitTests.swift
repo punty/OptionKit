@@ -11,6 +11,28 @@ class OptionKitTests: XCTestCase {
         XCTAssert(res.extraArgs.count == 0)
     }
     
+    func testArgumentStopper() {
+        let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
+        let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)
+        
+        let flags = [
+            helpFlag,
+            versFlag
+            
+        ]
+        let optionParser = OptionParser(flags: flags)
+        
+        let args = ["test", "-h", "--", "-v", "arg", "-b"]
+        let res = try! optionParser.parse(arguments:args)
+        XCTAssert(res.options.count == 1)
+        XCTAssert(res.options.index(of: helpFlag) != nil)
+        XCTAssert(res.options.index(of: versFlag) == nil)
+        XCTAssert(res.extraArgs.count == 3)
+        XCTAssert(res.extraArgs[0] == "-v")
+        XCTAssert(res.extraArgs[1] == "arg")
+        XCTAssert(res.extraArgs[2] == "-b")
+    }
+    
     func testConcatOptionParse() {
         let helpFlag = Option(shortName: "h", name: "help", helpMessage: "Print Help", required: false, takesArguments: false)
         let versFlag = Option(shortName: "v", name: "version", helpMessage: "Print Version", required: false, takesArguments: false)

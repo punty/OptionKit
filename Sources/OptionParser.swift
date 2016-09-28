@@ -27,6 +27,9 @@ public class OptionParser {
     private let shortFlagPrefix = "-"
     private let flagPrefix = "--"
     private let argumentAttacher = "="
+    private let argumentStopper = "--"
+    
+     var skipOptions = false
     
     var flags: [Option]
     
@@ -36,7 +39,7 @@ public class OptionParser {
         self.flags = flags
     }
     
-    public func helpUsage() -> String {
+    public func usage() -> String {
         var message = ""
         if let name = self.name {
             message.append("Usage: \(name) [options] \n")
@@ -63,8 +66,12 @@ public class OptionParser {
         let subArgs = arguments.dropFirst(flagIndex + 1)
        
         for element in subArgs {
+            if element == argumentStopper {
+                skipOptions = true
+                continue
+            }
             let first = element.substring(from: element.index(after: element.startIndex))
-            if element.hasPrefix(shortFlagPrefix) && Int(first) == nil  {
+            if element.hasPrefix(shortFlagPrefix) && Int(first) == nil && !skipOptions  {
                 break
             }
             args.append(element)
@@ -75,10 +82,14 @@ public class OptionParser {
     
     public func parse(arguments: [String]) throws -> (options: [Option], extraArgs: [String]) {
         var resultOptions = [Option] ()
+        skipOptions = false
         name = arguments[0]
         var externalArgs: [String] = []
         var skipElements = 1
         for (index, argument) in arguments.enumerated() {
+            if skipOptions {
+                break
+            }
             if skipElements > 0 {
                 skipElements -= 1
                 continue
@@ -91,7 +102,7 @@ public class OptionParser {
                 var flag = try option(flag: argsumentSplit[0], short: false, flags: flags)
                 
                 externalArgs = flagValues(flagIndex: index,  arguments: arguments, attachedArg: attachedString)
-                if !externalArgs.isEmpty {
+                if !externalArgs.isEmpty && !skipOptions {
                     if flag.takesArguments {
                         flag.value = externalArgs[0]
                         externalArgs = Array(externalArgs.dropFirst())
@@ -120,7 +131,7 @@ public class OptionParser {
                     var flag = try option(flag: String(element), short: true, flags: flags)
                     if charIndex == flagString.characters.count - 1 {
                         externalArgs = flagValues(flagIndex: index,  arguments: arguments)
-                        if !externalArgs.isEmpty {
+                        if !externalArgs.isEmpty && !skipOptions {
                             if flag.takesArguments {
                                 flag.value = externalArgs[0]
                                 externalArgs = Array(externalArgs.dropFirst())

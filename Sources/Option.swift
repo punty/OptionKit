@@ -26,7 +26,7 @@ public struct Option: Hashable {
         return lhs.name == rhs.name
     }
     
-    public func usage() -> String {
+    func usage() -> String {
         let shortUsage = shortName != nil ? "-\(shortName!), " : ""
         let usage = shortUsage + "--\(name):"
         return "\(usage) \n \t \(helpMessage) (\(required ? "Required" : "Optional")) \n"
