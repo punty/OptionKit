@@ -29,21 +29,29 @@ public class OptionParser {
     private let argumentAttacher = "="
     private let argumentStopper = "--"
     
-     var skipOptions = false
+    var skipOptions = false
+    
+    var banner: String?
     
     var flags: [Option]
     
     var name: String?
     
-    public init(flags: [Option]) {
+    public init(flags: [Option], banner: String? = nil) {
         self.flags = flags
+        self.banner = banner
     }
     
     public func usage() -> String {
         var message = ""
-        if let name = self.name {
-            message.append("Usage: \(name) [options] \n")
+        if let banner = self.banner {
+            message.append(banner)
+        } else {
+            if let name = self.name {
+                message.append("Usage: \(name) [options] \n")
+            }
         }
+       
         for opt in flags {
             message.append(opt.usage())
         }
