@@ -2,12 +2,12 @@
 import Foundation
 
 public struct Option: Hashable {
-    let shortName: String?
-    let name: String
-    let helpMessage:String
-    var value: String?
-    let required: Bool
-    let takesArguments: Bool
+    public let shortName: String?
+    public let name: String
+    public let helpMessage:String
+    public var value: String?
+    public let required: Bool
+    public let takesArguments: Bool
     
     public init(shortName: String?, name: String, helpMessage: String, required: Bool, takesArguments: Bool) {
         value = nil
